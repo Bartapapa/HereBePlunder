@@ -196,12 +196,6 @@ public class Character_AnimatorHandler : MonoBehaviour
         _controller.CanAttack = false;
     }
 
-    public void ToggleRootMotion(bool on)
-    {
-        Animator.applyRootMotion = on;
-        _controller.RootMotionActive = on;
-    }
-
     public void EnableRightWeaponCollider(int index)
     {
         if (_rightWeapon == null)
@@ -245,17 +239,7 @@ public class Character_AnimatorHandler : MonoBehaviour
 
         _leftWeapon.ToggleCollider(index, false);
     }
-
-    #endregion
-
-    private void OnAnimatorMove()
-    {
-        // Accumulate rootMotion deltas between character updates 
-        _controller.RootMotionPositionDelta += Animator.deltaPosition;
-        _controller.RootMotionRotationDelta = Animator.deltaRotation * _controller.RootMotionRotationDelta;
-    }
-
-    public void CharacterAct()
+    public void CharacterAttackAct()
     {
         float actDuration;
 
@@ -280,5 +264,46 @@ public class Character_AnimatorHandler : MonoBehaviour
         }
 
         _controller.Act(actDuration);
+    }
+
+    #endregion
+
+    public void TogglePositionRootMotion(bool on)
+    {
+        Animator.applyRootMotion = on;
+        _controller.RootMotionPositionActive = on;
+    }
+
+    public void ToggleRotationRootMotion(bool on)
+    {
+        Animator.applyRootMotion = on;
+        _controller.RootMotionRotationActive = on;
+    }
+
+    public void SetMoveSpeed(float MS)
+    {
+        _controller.SetMoveSpeed(MS);
+    }
+
+    public void ResetMoveSpeed()
+    {
+        _controller.ResetMoveSpeed();
+    }
+
+    public void SetRotationSpeed(float OS)
+    {
+        _controller.SetOrientationSharpness(OS);
+    }
+
+    public void ResetRotationSpeed()
+    {
+        _controller.ResetOrientationSharpness();
+    }
+
+    private void OnAnimatorMove()
+    {
+        // Accumulate rootMotion deltas between character updates 
+        _controller.RootMotionPositionDelta += Animator.deltaPosition;
+        _controller.RootMotionRotationDelta = Animator.deltaRotation * _controller.RootMotionRotationDelta;
     }
 }

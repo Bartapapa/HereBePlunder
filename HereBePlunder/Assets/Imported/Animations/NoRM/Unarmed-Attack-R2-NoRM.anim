@@ -33149,8 +33149,22 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: SetRotationSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 100
+    intParameter: 0
+    messageOptions: 0
   - time: 0.16666667
-    functionName: CharacterAct
+    functionName: SetMoveSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.16666667
+    functionName: SetRotationSpeed
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -33172,6 +33186,20 @@ AnimationClip:
     messageOptions: 0
   - time: 0.56666666
     functionName: CanAttack
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.56666666
+    functionName: ResetMoveSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.56666666
+    functionName: ResetRotationSpeed
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

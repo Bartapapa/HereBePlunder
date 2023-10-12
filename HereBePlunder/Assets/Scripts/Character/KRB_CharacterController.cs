@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using KinematicCharacterController;
 using System;
+using UnityEngine.Rendering;
 
 public enum CharacterState
 {
@@ -46,6 +47,11 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
     public KinematicCharacterMotor Motor;
     public Character_AnimatorHandler AnimatorHandler;
 
+    [Header("Original stats")]
+    private float _originalMaxStableMoveSpeed;
+    private float _originalStableMovementSharpness;
+    private float _originalOrientationSharpness;
+
     [Header("Stable Movement")]
     public float MaxStableMoveSpeed = 10f;
     public float StableMovementSharpness = 15f;
@@ -88,7 +94,8 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
     public float AttackRequestGracePeriod = .2f;
 
     [Header("Rootmotion animation")]
-    public bool RootMotionActive = false;
+    public bool RootMotionPositionActive = false;
+    public bool RootMotionRotationActive = false;
     private Vector3 _rootMotionPositionDelta = Vector3.zero;
     private Quaternion _rootMotionRotationDelta = Quaternion.identity;
     public Vector3 RootMotionPositionDelta
@@ -158,6 +165,35 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
 
         // Assign the characterController to the motor
         Motor.CharacterController = this;
+
+        SetOriginalStats();
+    }
+
+    private void SetOriginalStats()
+    {
+        _originalMaxStableMoveSpeed = MaxStableMoveSpeed;
+        _originalOrientationSharpness = OrientationSharpness;
+        _originalStableMovementSharpness = StableMovementSharpness;
+    }
+
+    public void SetMoveSpeed(float MS)
+    {
+        MaxStableMoveSpeed = MS;
+    }
+
+    public void ResetMoveSpeed()
+    {
+        MaxStableMoveSpeed = _originalMaxStableMoveSpeed;
+    }
+
+    public void SetOrientationSharpness(float OS)
+    {
+        OrientationSharpness = OS;
+    }
+
+    public void ResetOrientationSharpness()
+    {
+        OrientationSharpness = _originalOrientationSharpness;
     }
 
     /// <summary>
@@ -223,11 +259,11 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
 
         Vector3 aimInputVector = Vector3.ClampMagnitude(new Vector3(inputs.AimAxisRight, 0f, inputs.AimAxisForward), 1f);
 
-        if (_isActing)
-        {
-            moveInputVector = Vector3.zero;
-            aimInputVector = Vector3.zero;
-        }
+        //if (_isActing)
+        //{
+        //    moveInputVector = Vector3.zero;
+        //    aimInputVector = Vector3.zero;
+        //}
 
         // Calculate camera direction and rotation on the character plane
         Vector3 cameraPlanarDirection = Vector3.ProjectOnPlane(inputs.CameraRotation * Vector3.forward, Motor.CharacterUp).normalized;
@@ -302,7 +338,7 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
         {
             case CharacterState.Default:
                 {
-                    if (!RootMotionActive)
+                    if (!RootMotionRotationActive)
                     {
                         if (_lookInputVector.sqrMagnitude > 0f && OrientationSharpness > 0f)
                         {
@@ -359,7 +395,7 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
         {
             case CharacterState.Default:
                 {
-                    if (!RootMotionActive)
+                    if (!RootMotionPositionActive)
                     {
                         // Ground movement
                         if (Motor.GroundingStatus.IsStableOnGround)
@@ -618,7 +654,7 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
             }
         }
 
-        if (RootMotionActive)
+        if (RootMotionPositionActive || RootMotionRotationActive)
         {
             // Reset root motion deltas
             _rootMotionPositionDelta = Vector3.zero;

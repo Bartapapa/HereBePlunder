@@ -43265,8 +43265,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0
+    functionName: SetRotationSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 100
+    intParameter: 0
+    messageOptions: 0
   - time: 0.16666667
-    functionName: CharacterAct
+    functionName: CharacterAttackAct
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -43278,6 +43285,20 @@ AnimationClip:
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 1
+    messageOptions: 0
+  - time: 0.36666667
+    functionName: SetMoveSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.36666667
+    functionName: SetRotationSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
     messageOptions: 0
   - time: 0.5
     functionName: DisableRightWeaponCollider
@@ -43302,6 +43323,20 @@ AnimationClip:
     messageOptions: 0
   - time: 1
     functionName: CanAttack
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: ResetMoveSpeed
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1
+    functionName: ResetRotationSpeed
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
