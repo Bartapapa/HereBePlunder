@@ -42,4 +42,14 @@ public class Weapon : ScriptableObject
 
     [SerializeField] private List<WeaponAttack> _attacks = new List<WeaponAttack>();
     public List<WeaponAttack> Attacks => _attacks;
+
+    [Header("Weapons")]
+    [SerializeField] private WeaponObject _rightWeapon;
+    public WeaponObject RightWeapon => _rightWeapon;
+
+    [SerializeField] private bool _isDualWielded = false;
+    public bool IsDualWielded => _isDualWielded;
+
+    [SerializeField] private WeaponObject _leftWeapon;
+    public WeaponObject LeftWeapon => _leftWeapon;
 }

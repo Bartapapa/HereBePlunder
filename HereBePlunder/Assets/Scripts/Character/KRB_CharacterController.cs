@@ -68,6 +68,7 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
     [Header("Dashing")]
     [SerializeField] private float _dashDuration = .5f;
     [SerializeField] private float _dashSpeed = 15f;
+    public float DashRequestGracePeriod = .2f;
     private float _dashTimer = 0f;
     private Vector3 _dashInputVector;
 
@@ -139,6 +140,7 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
     private float _timeSinceLastAbleToJump = 0f;
     private bool _dashRequested = false;
     private bool _dashConsumed = false;
+    private float _timeSinceDashRequested = Mathf.Infinity;
     private bool _attackRequested = false;
     private bool _attackConsumed = false;
     private float _timeSinceAttackRequested = Mathf.Infinity;
@@ -520,13 +522,28 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
                     }
 
                     //Handle dash
-                    if (_dashRequested && Motor.GroundingStatus.IsStableOnGround)
+                    if (_dashRequested)
                     {
-                        _dashRequested = false;
-                        _dashConsumed = true;
-                        TransitionToState(CharacterState.Dashing);
-                        AnimatorHandler.DashTrigger();
+                        if (_timeSinceDashRequested > DashRequestGracePeriod)
+                        {
+                            _dashRequested = false;
+                        }
+                        else
+                        {
+                            _timeSinceDashRequested += deltaTime;
+                        }
+
+                        if (Motor.GroundingStatus.IsStableOnGround && !_isActing)
+                        {
+                            _dashRequested = false;
+                            _dashConsumed = true;
+                            _canAttack = true;
+                            TransitionToState(CharacterState.Dashing);
+                            AnimatorHandler.DashTrigger();
+                            AnimatorHandler.ResetAttack();
+                        }
                     }
+
 
                     //Handle attack
                     if(_attackRequested)
@@ -540,7 +557,7 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
                             _timeSinceAttackRequested += deltaTime;
                         }
 
-                        if (_canAttack && _attackRequested)
+                        if (_canAttack && _attackRequested && Motor.GroundingStatus.IsStableOnGround)
                         {
                             _attackRequested = false;
                             _attackConsumed = true;
@@ -580,9 +597,6 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
 
                     // Gravity
                     currentVelocity += Gravity * deltaTime;
-
-                    // Drag
-                    currentVelocity *= (1f / (1f + (Drag * deltaTime)));
 
                     break;
                 }
@@ -748,6 +762,7 @@ public class KRB_CharacterController : MonoBehaviour, ICharacterController
     public void RequestDash()
     {
         _dashRequested = true;
+        _timeSinceDashRequested = 0f;
     }
 
     public void RequestAttack()

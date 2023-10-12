@@ -20,3 +20,8 @@ MonoBehaviour:
   - ActTime: 0.5
   - ActTime: 0.5
   - ActTime: 0.8
+  _rightWeapon: {fileID: 1196015936263513022, guid: f25052e545fd58d488e0203ca3a7ac25,
+    type: 3}
+  _isDualWielded: 1
+  _leftWeapon: {fileID: 8368555567714944494, guid: a588fb715cadf1b4b85931a6853cfaf8,
+    type: 3}
